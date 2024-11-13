@@ -13,15 +13,17 @@ import { MoneyInput } from "./money-input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { PAYMENT_METHOD_OPTIONS,  TRANSACTION_CATEGORY_OPTIONS,  TRANSACTION_TYPE_OPTION } from "../_consants/transactions";
 import { DatePicker } from "./ui/date-picker";
-
+import { addTransaction } from "../_actions/add-transactions";
+import { toast } from "sonner";
+import { useState } from "react";
 
 const formSchema = z.object({
     name: z.string().trim().min(2, {
         message: "O nome é obrigatório",
     }).max(50),
 
-    amount : z.string().trim().min(1, {
-        message: "O nome é obrigatório",
+    amount : z.number().min(1, {
+        message: "O Valor é obrigatório",
   }),
     type: z.nativeEnum(TransactionType, {
         required_error:"O tipo é obrigatório"
@@ -40,12 +42,13 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>
 
 const AddTransactionButton = () => {
+    const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
     const form = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
           name: "",
-          amount:"",
+          amount:0,
           category: TransactionCategory.OTHER,
           date: new Date(),
           paymentMethod: TransactionPaymentMethod.CASH,
@@ -53,14 +56,33 @@ const AddTransactionButton = () => {
         },
       })
 
-const onSubmit = (data: FormSchema) => {
-    console.log(data)
+const onSubmit = async (data: FormSchema) => {
+  setDialogIsOpen(false)
+form.reset()
+    try {
+     const response = await addTransaction(data)
+
+     if (response.success) {
+        toast.success(response.message , {
+            description: "Adicionada: "+data.name}); // Notificação de sucesso
+      } else {
+        toast.error(response.message, {
+            description: "Erro fatal. Tente novamente mais tarde"}); // Notificação de erro
+      }
+
+    } catch (error) {
+        toast.error("Ocorreu um erro ao adicionar a transação.", {
+            description: "Erro fatal cod:" + error}); 
+    }
+    
 
 }
 
 
     return ( 
-        <Dialog onOpenChange={(open) => {
+        <Dialog open={dialogIsOpen}
+         onOpenChange={(open) => {
+            setDialogIsOpen(open)
             if (!open){
                 form.reset()
             }
@@ -70,10 +92,12 @@ const onSubmit = (data: FormSchema) => {
            <ChartNoAxesCombined className="m-1" />
            </Button>  
         </DialogTrigger>     
-        <DialogContent>
+        <DialogContent className="h-full overflow-y-auto scrollbar-hidden">
             <DialogHeader>
+            
                 <DialogTitle>Adicionar Transação</DialogTitle>
                 <DialogDescription>Insira as informações abaixo</DialogDescription>
+              
             </DialogHeader>
 
             <Form {...form}>
@@ -99,7 +123,11 @@ const onSubmit = (data: FormSchema) => {
             <FormItem>
               <FormLabel>Valor</FormLabel>
               <FormControl>
-                <MoneyInput placeholder="Digite o valor..." {...field} />
+                <MoneyInput placeholder="Digite o valor..." 
+                onValueChange={({floatValue}) => field.onChange(floatValue)}
+                 onBlur={field.onBlur}
+                 disabled={field.disabled}
+                  />
               </FormControl>
               <FormMessage />
             </FormItem>
