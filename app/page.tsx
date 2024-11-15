@@ -3,6 +3,7 @@ import { UserButton } from "@clerk/nextjs";
 import { Button } from "./_components/ui/button";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import Navbar from "./_components/navbar";
 
 
 
@@ -14,10 +15,13 @@ const Home = async () => {
   }
 
   return (
+    <div>
+ <Navbar/>
     <div className="flex w-screen justify-center items-center ">
-      <h1 className="text-center text-xl "> hello world</h1>
+     
       <Button> loguin </Button>
-      <UserButton showName></UserButton>
+    </div>
+
     </div>
   );
 };
