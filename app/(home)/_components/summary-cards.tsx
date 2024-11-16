@@ -26,7 +26,7 @@ const SummaryCards = async ({month,
 
 
     return ( 
-        <div className="space-y-6 mt-3">
+        <div className="space-y-6 mt-1">
             {/* Primeiro Card*/}
          
             <Card className=" bg-white bg-opacity-5">
@@ -36,7 +36,7 @@ const SummaryCards = async ({month,
   </CardHeader>
 
   <CardContent className="flex justify-between">
-    <p className="text-4xl font-bold w-full"> {Intl.NumberFormat("pt-BR",{
+    <p className="text-3xl font-bold w-full"> {Intl.NumberFormat("pt-BR",{
                 style: "currency",
                 currency:"BRL",
             }).format(balance)}</p>

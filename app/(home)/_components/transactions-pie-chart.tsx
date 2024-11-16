@@ -67,9 +67,9 @@ const TransactionsPieChart = ({depositTotal,
  ]
  
     return (
-    <Card className="flex flex-col p-4">
+    <Card className=" p-5">
 
-      <CardContent className="flex-1 pb-0">
+      <CardContent>
         <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
@@ -83,7 +83,7 @@ const TransactionsPieChart = ({depositTotal,
               data={chartData}
               dataKey="amount"
               nameKey="type"
-              innerRadius={80}
+              innerRadius={70}
             />
           </PieChart>
         </ChartContainer>
