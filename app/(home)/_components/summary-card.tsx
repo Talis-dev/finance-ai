@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader } from "@/app/_components/ui/card";
-import { HandCoins } from "lucide-react";
 import { ReactNode } from "react";
 
 
