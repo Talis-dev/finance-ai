@@ -4,9 +4,23 @@ import { transactionColumns } from "./_columns";
 import AddTransactionButton from "../_components/button-add-transaction";
 import { Toaster } from "../../app/_components/ui/sonner";
 import Navbar from "../_components/navbar";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-const Transactions = async () => {
-  const transactions = await db.transaction.findMany({});
+
+const TransactionsPage = async () => {
+  
+const {userId} = await auth()
+  if (!userId){
+    redirect("/login")
+  }
+
+const transactions = await db.transaction.findMany({
+  where: {
+    userId
+  }
+});
+
 
   return (
     <>
@@ -23,4 +37,4 @@ const Transactions = async () => {
   );
 };
 
-export default Transactions;
+export default TransactionsPage;
