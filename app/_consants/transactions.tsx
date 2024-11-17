@@ -1,4 +1,8 @@
 import { TransactionType } from "@prisma/client"
+import { Banknote, Barcode, CreditCard, DiamondPercent, HandCoins, Landmark } from "lucide-react"
+
+
+
 
 
 export const TRANSACTION_CATEGORY_LABELS = {
@@ -12,7 +16,17 @@ export const TRANSACTION_CATEGORY_LABELS = {
     EDUCATION: "Educação",
     OTHER: "Outros",
   }
-  
+
+   export const TRANSACTION_PAYMENT_METHOD_ICONS = {
+    CREDIT_CARD: <CreditCard/>,
+    DEBIT_CARD: <CreditCard/>,
+    BANK_TRANSFER: <Landmark/>,
+    BANK_SLIP: <Barcode/>,
+    CASH: <Banknote/>,
+    PIX: <DiamondPercent/>,
+    OTHER: <HandCoins/>,
+  }
+
   export const TRANSACTION_PAYMENT_METHOD_LAVELS = {
     CREDIT_CARD: "Cartão de Crédito",
     DEBIT_CARD: "Cartão de Débito",

@@ -68,6 +68,11 @@ percentageOfTotal: Math.round(
 )
 }))
 
+const lastTransactions = await db.transaction.findMany({
+    where,
+    orderBy:{date: "desc"},
+    take:15
+})
 
  return {
         balance,
@@ -76,5 +81,6 @@ percentageOfTotal: Math.round(
         expensesTotal,
         typesPercentage,
         totalExpensePerCategory,
+        lastTransactions,
     }
 }

@@ -9,6 +9,7 @@ import { isMatch } from "date-fns";
 import TransactionsPieChart from "./_components/transactions-pie-chart";
 import { getDashboard } from "../_actions/add-transactions/_data/get-dashboard";
 import ExpensesPerCategory from "./_components/expenses-per-category";
+import LastTransactions from "./_components/last-transactions";
 
 
 interface NomeProps {
@@ -37,8 +38,7 @@ const dashboard = await getDashboard(month)
       <Navbar />
 
       <div className="p-4 ">
-
-      <div className="flex justify-between">
+      <div className="flex justify-between p-1">
         <h1 className="text-2xl font-semibold ">Dashboard</h1>
         <div className="flex items-center gap-3">
           <p>Relatório IA</p>
@@ -49,7 +49,7 @@ const dashboard = await getDashboard(month)
 
        <div className="grid grid-cols-[2fr,1fr]">
 
-        <div className=" flex flex-col gap-6 ">
+        <div className=" flex flex-col gap-6">
          <SummaryCards month={month} {...dashboard}/>   
 
 
@@ -65,7 +65,10 @@ const dashboard = await getDashboard(month)
  </div>
       
         </div>
-      
+<div className="mt-1 ml-6">
+  <LastTransactions lastTransactions={dashboard.lastTransactions}/>
+
+</div>      
 
        </div>
 
