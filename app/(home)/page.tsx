@@ -28,7 +28,7 @@ const Home = async ({searchParams: {month}}: NomeProps) => {
 const monthIsInvalid = !month || !isMatch(month,'MM')
 
 if(monthIsInvalid) {
-  redirect("?month=01")
+  redirect(`?month=${new Date().getMonth()+1}`)
 }
 
 const dashboard = await getDashboard(month)
@@ -37,8 +37,8 @@ const dashboard = await getDashboard(month)
 <>
       <Navbar />
 
-      <div className="p-4 ">
-      <div className="flex justify-between p-1">
+      <div className="flex flex-col p-4 h-full ">
+      <div className="flex justify-between mb-3">
         <h1 className="text-2xl font-semibold ">Dashboard</h1>
         <div className="flex items-center gap-3">
           <p>Relatório IA</p>
@@ -47,28 +47,19 @@ const dashboard = await getDashboard(month)
         
       </div>
 
-       <div className="grid grid-cols-[2fr,1fr]">
-
-        <div className=" flex flex-col gap-6">
+       <div className="grid grid-cols-[2fr,1fr] gap-6 h-full ">
+        <div className=" flex flex-col gap-6 h-full">
          <SummaryCards month={month} {...dashboard}/>   
-
-
-<div className="grid grid-cols-[0.97fr,2fr] gap-6">
-  
-      <div className="">
-                <TransactionsPieChart {...dashboard}/>
-                
-            </div>
- <div className=" max-h-[410px] ">
-<ExpensesPerCategory expensesPerCategory={dashboard.totalExpensePerCategory}/>
-</div>            
- </div>
-      
+          <div className="grid grid-cols-3 grid-rows-1 gap-6">
+     
+             <TransactionsPieChart {...dashboard}/>      
+             <ExpensesPerCategory expensesPerCategory={dashboard.totalExpensePerCategory}/>           
+          </div>
         </div>
-<div className="mt-1 ml-6">
-  <LastTransactions lastTransactions={dashboard.lastTransactions}/>
 
-</div>      
+          <div className="mt-1">
+           <LastTransactions lastTransactions={dashboard.lastTransactions}/>
+          </div>      
 
        </div>
 

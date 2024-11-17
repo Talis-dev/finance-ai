@@ -4,7 +4,6 @@ import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import { TRANSACTION_PAYMENT_METHOD_ICONS } from "@/app/_consants/transactions";
 import { formatCurrency } from "@/app/_utils/currency";
 import { Transaction, TransactionType } from "@prisma/client";
-import { CreditCard } from "lucide-react";
 import Link from "next/link";
 
 
