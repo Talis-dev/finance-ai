@@ -24,7 +24,7 @@ const session = await stripe.checkout.sessions.create({
 
     subscription_data:{
      metadata: {
-    clerck_user_id: userId,
+    clerk_user_id: userId,
     }
         },
     line_items:[{
