@@ -1,5 +1,4 @@
 
-
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import Navbar from "../_components/navbar";
 import { redirect } from "next/navigation";
@@ -7,6 +6,7 @@ import { Card, CardContent, CardHeader } from "../_components/ui/card";
 import { CheckCheck, X } from "lucide-react";
 import AquirePlanButton from "./_components/aquire-plan-button";
 import { Badge } from "../_components/ui/badge";
+import { getCurrentMonthTransactions } from "../_data/get-current-month-transaction";
 
 const Subscription = async () => {
 
@@ -19,7 +19,10 @@ const client = await clerkClient()
 const user = await client.users.getUser(userId)
 const hasProPlan = user?.publicMetadata.subscriptionPlan == "Pro"
 
-    return ( <>
+
+const { currentMonthTransactions, transactionsLimitPerMonth } = await getCurrentMonthTransactions();
+  
+  return ( <>
                 <Navbar/>
               <div className="space-y-6 p-6 ">
                 <h1 className="text-2xl font-semibold ">Assinaturas</h1>
@@ -40,7 +43,13 @@ const hasProPlan = user?.publicMetadata.subscriptionPlan == "Pro"
                     <CardContent className="space-y-6 py-8"> 
                       <div className="flex items-center gap-2 ">
                         <CheckCheck className="text-primary"/>
-                        <p>Apenas 10 transaçoes por mês (7/10)</p>
+                        <p>
+                          Apenas {transactionsLimitPerMonth} transações por mês (<span className={`${
+                          currentMonthTransactions >= transactionsLimitPerMonth * 0.7? "text-red-500" : ""}`}>
+                            {currentMonthTransactions}
+                            </span>/{transactionsLimitPerMonth})
+                            </p>
+                          
                       </div>
                       <div className="flex items-center gap-2 ">
                         <X/>
@@ -67,7 +76,7 @@ const hasProPlan = user?.publicMetadata.subscriptionPlan == "Pro"
                     <CardContent className="space-y-6 py-8"> 
                       <div className="flex items-center gap-2 ">
                         <CheckCheck className="text-primary"/>
-                        <p>Transaçoes ilimitadas</p>
+                        <p>Transações ilimitadas</p>
                       </div>
                       <div className="flex items-center gap-2 ">
                       <CheckCheck className="text-primary"/>

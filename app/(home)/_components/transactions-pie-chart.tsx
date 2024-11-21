@@ -1,74 +1,59 @@
-"use client"
+"use client";
 
-import { Pie, PieChart } from "recharts"
+import { Pie, PieChart } from "recharts";
 
-import {
-  Card,
-  CardContent,
-} from "@/app/_components/ui/card"
+import { Card, CardContent } from "@/app/_components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/app/_components/ui/chart"
-import { TransactionType } from "@prisma/client"
-import { TransactionPercentageType } from "@/app/_actions/add-transactions/_data/get-dashboard/types"
-import { HandCoins, TrendingDown, TrendingUp } from "lucide-react"
-import PercentageItem from "./percentage-item"
-
+} from "@/app/_components/ui/chart";
+import { TransactionType } from "@prisma/client";
+import { TransactionPercentageType } from "@/app/_data/get-dashboard/types";
+import { HandCoins, TrendingDown, TrendingUp } from "lucide-react";
+import PercentageItem from "./percentage-item";
 
 const chartConfig = {
-[TransactionType.INVESTMENT]:{
+  [TransactionType.INVESTMENT]: {
     label: "Investido",
-    color: "#ffff"
-},
-[TransactionType.DEPOSIT]:{
+    color: "#ffff",
+  },
+  [TransactionType.DEPOSIT]: {
     label: "Receita",
-    color: "#55b02e"
-},
-[TransactionType.EXPENSE]:{
+    color: "#55b02e",
+  },
+  [TransactionType.EXPENSE]: {
     label: "Despesas",
-    color: "#E93030"
-},
-} satisfies ChartConfig
-
+    color: "#E93030",
+  },
+} satisfies ChartConfig;
 
 interface TransactionsPieChartProps {
-    typesPercentage: TransactionPercentageType,
-    depositTotal: number,
-    investmentsTotal:number,
-    expensesTotal:number,
+  typesPercentage: TransactionPercentageType;
+  depositTotal: number;
+  investmentsTotal: number;
+  expensesTotal: number;
 }
 
-
-
-const TransactionsPieChart = ({depositTotal,
-    investmentsTotal,expensesTotal,typesPercentage}:TransactionsPieChartProps) => {
- 
- const chartData = [
-
-    {   type: TransactionType.DEPOSIT,
-        amount: depositTotal,
-        fill: "#55bb2e"
+const TransactionsPieChart = ({
+  depositTotal,
+  investmentsTotal,
+  expensesTotal,
+  typesPercentage,
+}: TransactionsPieChartProps) => {
+  const chartData = [
+    { type: TransactionType.DEPOSIT, amount: depositTotal, fill: "#55bb2e" },
+    {
+      type: TransactionType.INVESTMENT,
+      amount: investmentsTotal,
+      fill: "#fff",
     },
-    {   type: TransactionType.INVESTMENT,
-        amount: investmentsTotal,
-        fill: "#fff"
-    },
-    {   type: TransactionType.EXPENSE,
-        amount: expensesTotal,
-        fill: "#E93030"
-    },
+    { type: TransactionType.EXPENSE, amount: expensesTotal, fill: "#E93030" },
+  ];
 
-
-
-
- ]
- 
-    return (
+  return (
     <Card className=" p-5">
-
       <CardContent>
         <ChartContainer
           config={chartConfig}
@@ -88,30 +73,42 @@ const TransactionsPieChart = ({depositTotal,
           </PieChart>
         </ChartContainer>
 
-         <div className=" space-y-3">
-          
-            <PercentageItem 
-            icon={<HandCoins size={16} className="text-secondary bg-muted rounded-sm size-8 p-2"/>}
+        <div className=" space-y-3">
+          <PercentageItem
+            icon={
+              <HandCoins
+                size={16}
+                className="text-secondary bg-muted rounded-sm size-8 p-2"
+              />
+            }
             title="Investimentos"
             value={typesPercentage[TransactionType.INVESTMENT]}
-            />
+          />
 
-            <PercentageItem 
-            icon={<TrendingUp size={16} className="text-primary bg-green-500 rounded-sm size-8 p-2 bg-opacity-10"/>}
+          <PercentageItem
+            icon={
+              <TrendingUp
+                size={16}
+                className="text-primary bg-green-500 rounded-sm size-8 p-2 bg-opacity-10"
+              />
+            }
             title="Ganhos"
             value={typesPercentage[TransactionType.DEPOSIT]}
-            />
+          />
 
-            <PercentageItem 
-            icon={<TrendingDown size={16} className="text-destructive bg-red-500 rounded-sm size-8 p-2 bg-opacity-10"/>}
+          <PercentageItem
+            icon={
+              <TrendingDown
+                size={16}
+                className="text-destructive bg-red-500 rounded-sm size-8 p-2 bg-opacity-10"
+              />
+            }
             title="Gastos"
             value={typesPercentage[TransactionType.EXPENSE]}
-            />
-
-         </div>
-
+          />
+        </div>
       </CardContent>
     </Card>
-  )
-}
-export default TransactionsPieChart
+  );
+};
+export default TransactionsPieChart;

@@ -6,6 +6,8 @@ import { Toaster } from "../../app/_components/ui/sonner";
 import Navbar from "../_components/navbar";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { getCurrentMonthTransactions } from "../_data/get-current-month-transaction";
+import { canUserAddTransactions } from "../_data/can-user-add-transaction";
 
 
 const TransactionsPage = async () => {
@@ -21,14 +23,17 @@ const transactions = await db.transaction.findMany({
   }
 });
 
-
+const userCanUserAddTransactions  = await canUserAddTransactions()
+const { currentMonthTransactions, transactionsLimitPerMonth } = await getCurrentMonthTransactions();
   return (
     <>
     <Navbar/>
     <div className="p-6 space-y-6">
       <div className="flex w-full items-center justify-between ">
         <h1 className="text-2xl font-bold w-full">Transações</h1>
-        <AddTransactionButton />
+    <AddTransactionButton userCanAddTransaction={userCanUserAddTransactions} 
+    transactionsLimitPerMonth={transactionsLimitPerMonth} 
+    currentMonthTransactions = {currentMonthTransactions}/>
       </div>
       <Toaster />
       <DataTable columns={transactionColumns} data={transactions} />

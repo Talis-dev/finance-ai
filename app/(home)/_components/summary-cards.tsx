@@ -2,6 +2,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { GemIcon, HandCoins, TrendingDown, TrendingUp } from "lucide-react";
 import SummaryCard from "./summary-card";
 import AddTransactionButton from "@/app/_components/button-add-transaction";
+import { canUserAddTransactions } from "@/app/_data/can-user-add-transaction";
+import { getCurrentMonthTransactions } from "@/app/_data/get-current-month-transaction";
 
 
 
@@ -23,7 +25,8 @@ const SummaryCards = async ({month,
 }: SummaryCards) => {
 
 
-
+  const userCanUserAddTransactions  = await canUserAddTransactions()
+  const { currentMonthTransactions, transactionsLimitPerMonth } = await getCurrentMonthTransactions();
 
     return ( 
         <div className="space-y-6 mt-1">
@@ -40,7 +43,9 @@ const SummaryCards = async ({month,
                 style: "currency",
                 currency:"BRL",
             }).format(balance)}</p>
-    <AddTransactionButton />
+    <AddTransactionButton userCanAddTransaction={userCanUserAddTransactions} 
+    transactionsLimitPerMonth={transactionsLimitPerMonth} 
+    currentMonthTransactions = {currentMonthTransactions}/>
   </CardContent>
 
 </Card>
